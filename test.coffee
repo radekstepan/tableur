@@ -1,37 +1,39 @@
-fs = require 'fs'
 cs = require 'coffee-script'
-
-# Spreadsheet.
-sheet = {}
-sheet.a = [ 1, 2 ]
-a = sheet.a # local ref
 
 # User code.
 code = """
-sheet.a[2] = 5
-sheet.b[3] = "oh my"
+A[2] = 5
+B[3] = "oh my"
 # tricky now
-x = sheet.cgg # oh yeah
-x[0] = 7
-sheet['C'][0] = 1
-sheet['db'][9] = 'possible?'
+C[0] = 1
 """
-
-# Dumb "parse" finding all refs to a sheet.
-for match in code.match /sheet\.[\S]*|sheet\[(\"|\')[\S]*(\"|\')\]/gi
-    match = match.replace /sheet/gi, ''
-    if column = (match.match(/\w+/))[0]
-        # Create the column?
-        sheet[column] ?= []
 
 # Compile CS to JS wo/ closure.
 code = cs.compile code, 'bare': 'on'
 
-# Eval.
-try
-    eval code
-catch e
-    console.log e
+# Our environment.
+(env = (cb) ->
+    # Override require.
+    require = -> throw 'Error: require is not allowed'
+    # Clean up cs, fs, console refs.
+    cs = undefined ; fs = undefined ; console = undefined
+    
+    # Link them all here for easy access.
+    sheet = {}
 
-# Output "columns" now.
-console.log sheet
+    # Create columns [A-Z] should be enough.
+    for i in [65...91]
+        v = String.fromCharCode(i)
+        sheet[v] = @[v] = []
+
+    # Eval.
+    try
+        eval code
+        cb null, sheet        
+    catch e
+        err = e
+        if err.name and err.message then err = err.name + ': ' + err.message
+        cb err, null
+) (err, spreadsheet) ->
+    if err then console.log err
+    else console.log spreadsheet
