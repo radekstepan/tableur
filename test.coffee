@@ -13,10 +13,8 @@ code = cs.compile code, 'bare': 'on'
 
 # Our environment.
 (env = (cb) ->
-    # Override require.
-    require = -> throw 'Error: require is not allowed'
-    # Clean up cs, fs, console refs.
-    cs = undefined ; fs = undefined ; console = undefined
+    # Clean up cs, fs, console, require refs.
+    require = console = fs = cs = undefined
     
     # Link them all here for easy access.
     sheet = {}
@@ -26,7 +24,7 @@ code = cs.compile code, 'bare': 'on'
         v = String.fromCharCode(i)
         sheet[v] = @[v] = []
 
-    # Eval.
+    # Eval... yup.
     try
         eval code
         cb null, sheet        

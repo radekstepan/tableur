@@ -1,0 +1,121 @@
+@import url(http://fonts.googleapis.com/css?family=Strait)
+@import url(http://fonts.googleapis.com/css?family=Noticia\+Text)
+@import url(http://fonts.googleapis.com/css?family=Droid\+Sans\+Mono)
+
+html, body
+    height: 100%
+
+body
+    background: #F4F4F4
+
+header
+    background: #D8D8D8
+    border-bottom: 2px solid #F4F4F4
+    padding: 0 20px
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.7)
+
+    h1
+        margin: 0
+        text-transform: uppercase
+        font-family: Strait
+        font-size: 22px
+        font-weight: 400
+        color: #484848
+        text-shadow: 1px 1px 0 rgba(255,255,255,0.5)
+        padding: 14px 0
+
+        span
+            font-family: 'Noticia Text'
+            font-size: 24px
+            color: #000
+            margin-right: 10px
+
+    nav
+        ul
+            list-style-type: none
+            font-family: 'Noticia Text'
+            margin: 0
+
+            li
+                display: inline-block
+
+                a, a:hover
+                    color: #484848
+                    padding: 4px 16px
+                    display: block
+
+                    &.active
+                        background: #F4F4F4
+
+                    &:not(.active)
+                        text-shadow: 1px 1px 0 rgba(255,255,255,0.5)
+
+#main
+    padding: 20px
+    background: #F4F4F4
+    height: 80%
+
+    #code
+        height: 100%
+        margin-right: 4%
+        position: relative
+
+        textarea
+            height: 100%
+            min-height: 100%
+            display: block
+            border-radius: 0
+            font-size: 12px
+
+        span
+            position: absolute
+            bottom: 0
+            left: 0
+            color: #FFF
+            padding: 4px
+            width: 100%
+
+            &.alert
+                background: #850071
+
+            &.success
+                background: #227E0D
+
+    #code, table
+        width: 48%
+        float: left
+        font-family: 'Droid Sans Mono'
+
+    table
+        border-color: #CCC
+        border-collapse: collapse
+        
+        th, tr, td
+            color: #484848
+            font-size: 12px
+
+        th, td
+            padding: 4px !important
+
+        th
+            background: #F4F4F4
+            height: 27px
+            border-right: 1px solid #D8D8D8
+            text-align: center
+
+        tr
+            border-bottom: 1px solid #D8D8D8
+
+        td
+            background: #FFF
+            border-right: 1px solid #D8D8D8
+
+            &.edit
+                background: #E7FBFF
+                border: 2px solid #0055E1
+                color: #000
+
+    &:after
+        clear: both
+        display: block
+        content: ""
