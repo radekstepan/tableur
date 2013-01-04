@@ -3,7 +3,7 @@
     <nav>
         <ul>
             <% for doc in @docs: %>
-                <li><a <% if doc.name is @active.name: %>class="active"<% end %> data-name="<%= doc.name %>" href="tableur/doc/<%= doc.name %>"><%= doc.nice %></a></li>
+                <li><a <% if doc.name is @active.name: %>class="active"<% end %> data-name="<%= doc.name %>" href="/doc/<%= doc.name %>"><%= doc.nice %></a></li>
             <% end %>
         </ul>
     </nav>

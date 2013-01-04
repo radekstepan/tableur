@@ -1,29 +1,39 @@
 Chaplin = require 'chaplin'
 
-routes = require 'chaplin/core/routes'
+AppView = require 'chaplin/views/App'
+CodeView = require 'chaplin/views/Code'
+TableView = require 'chaplin/views/Table'
 
 require 'chaplin/lib/assert'
 
 # The application object.
-module.exports = class Tableur extends Chaplin.Application
+module.exports = class Tableur
 
-    title: 'tableur'
+    constructor: ->
+        # The listing of docs.
+        docs = window.Spreadsheets
 
-    data: {}
+        # Which doc do we want?
+        path = window.location.pathname
 
-    initialize: ->
-        super
+        # Grab first doc if none specified.
+        if path is '/' then req = docs.at(0).name
 
-        # Initialize core components
-        @initDispatcher
-            'controllerPath':   'chaplin/controllers/'
-            'controllerSuffix': ''
+        model = docs.filter( (doc) -> doc.name is req ).pop()
 
-        # So that nice Controller switching works...
-        @layout = new Chaplin.Layout {@title}
+        # Create the app view.
+        app = new AppView 'collection': docs, 'model': model
 
-        # Register all routes and start routing
-        @initRouter routes
+        # Fetch the doc.
+        $.ajax
+            'url': "/api/docs/#{model.get('name')}"
+            'dataType': 'json'
+            'success': (data) ->
+                # Clear any content.
+                $(app.el).find('#main').html('')
 
-        # Freeze the application instance to prevent further changes
-        Object.freeze? @
+                new CodeView 'text': data.code
+                new TableView()
+            'statusCode':
+                400: (data) ->
+                    console.log JSON.parse(data.responseText).message
