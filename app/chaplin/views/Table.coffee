@@ -2,7 +2,15 @@ Chaplin = require 'chaplin'
 
 module.exports = class TableView extends Chaplin.View
 
-    container:  '#table'
-    autoRender: true
+    container:       '#main'
+    containerMethod: 'append'
+    autoRender:      true
 
     getTemplateFunction: -> require 'chaplin/templates/table'
+
+    afterRender: ->
+        super
+        
+        $(@el).attr 'id', 'table'
+
+        @

@@ -1,14 +1,13 @@
 <header>
-    <h1><span>tableur</span>North American Airport</h1>
+    <h1><span>tableur</span><%= @active.nice %></h1>
     <nav>
         <ul>
             <% for doc in @docs: %>
-                <li><a <% if doc.name is @active: %>class="active"<% end %> data-name="<%= doc.name %>" href="tableur/doc/<%= doc.name %>"><%= doc.name %></a></li>
+                <li><a <% if doc.name is @active.name: %>class="active"<% end %> data-name="<%= doc.name %>" href="tableur/doc/<%= doc.name %>"><%= doc.nice %></a></li>
             <% end %>
         </ul>
     </nav>
 </header>
 <div id="main">
-    <div id="code"></div>
-    <div id="table"></div>
+    <p>Loading document &hellip;</p>
 </div>

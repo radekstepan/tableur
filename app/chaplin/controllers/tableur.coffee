@@ -16,7 +16,18 @@ module.exports = class TableurController extends Chaplin.Controller
         model = @docs.filter( (doc) -> doc.name is params.doc ).pop()
 
         # Create the app view.
-        new AppView 'collection': @docs, 'model': model
+        app = new AppView 'collection': @docs, 'model': model
 
-        new CodeView()
-        new TableView()
+        # Fetch the doc.
+        $.ajax
+            'url': "api/docs/#{model.get('name')}"
+            'dataType': 'json'
+            'success': (data) ->
+                # Clear any content.
+                $(app.el).find('#main').html('')
+
+                new CodeView 'text': data.code
+                new TableView()
+            'statusCode':
+                400: (data) ->
+                    console.log JSON.parse(data.responseText).message

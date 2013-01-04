@@ -8,4 +8,4 @@ module.exports = class AppView extends Chaplin.View
 
     getTemplateFunction: -> require 'chaplin/templates/body'
 
-    getTemplateData: -> 'docs': @collection.toJSON(), 'active': @model.get('name')
+    getTemplateData: -> 'docs': @collection.toJSON(), 'active': @model.toJSON()
