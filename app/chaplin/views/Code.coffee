@@ -8,7 +8,7 @@ module.exports = class CodeView extends Chaplin.View
 
     getTemplateFunction: -> require 'chaplin/templates/code'
 
-    getTemplateData: -> 'text': @options.text
+    getTemplateData: -> 'text': @model.get 'code'
 
     afterRender: ->
         super

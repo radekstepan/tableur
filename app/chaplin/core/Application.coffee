@@ -32,8 +32,12 @@ module.exports = class Tableur
                 # Clear any content.
                 $(app.el).find('#main').html('')
 
-                new CodeView 'text': data.code
-                new TableView()
+                # Set the content on our skeleton model.
+                model.set 'code':  data.code
+                model.set 'sheet': data.sheet
+
+                new CodeView 'model': model
+                new TableView 'model': model
             'statusCode':
                 400: (data) ->
                     console.log JSON.parse(data.responseText).message

@@ -5,8 +5,8 @@ module.exports = (code, sheet, cb) ->
     # Create columns [A-Z] should be enough.
     for i in [65...91]
         v = String.fromCharCode(i)
-        # Rows 0 to 49.
-        for j in [0...50]
+        # Rows 0 to 10.
+        for j in [0...11]
             # Get the value.
             if sheet[v + j] then @[v + j] = sheet[v + j]
             # Go empty.
@@ -15,7 +15,11 @@ module.exports = (code, sheet, cb) ->
     # Eval... yup.
     try
         eval code
-        cb null, sheet        
+
+        # It worked, so remove all 'empty' cells.
+        ( delete sheet[key] for key, value of sheet when value.length is 0 )
+
+        cb null, sheet
     catch e
         err = e
         if err.name and err.message then err = err.name + ': ' + err.message
