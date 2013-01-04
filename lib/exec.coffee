@@ -5,8 +5,8 @@ module.exports = (code, sheet, cb) ->
     # Create columns [A-Z] should be enough.
     for i in [65...91]
         v = String.fromCharCode(i)
-        # Rows 0 to 10.
-        for j in [0...11]
+        # Rows 0 to 49.
+        for j in [0...50]
             # Get the value.
             if sheet[v + j] then @[v + j] = sheet[v + j]
             # Go empty.

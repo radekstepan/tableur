@@ -2,53 +2,19 @@
     <thead>
         <tr>
             <th></th>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
-            <th>D</th>
-            <th>E</th>
+            <% for i in [65...91]: %>
+                <th><%= String.fromCharCode i %></th>
+            <% end %>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th>0</th>
-            <td>5</td>
-            <td></td>
-            <td>145</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>1</th>
-            <td></td>
-            <td></td>
-            <td>1</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>2</th>
-            <td></td>
-            <td></td>
-            <td class="edit" contentEditable="true">some text here</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>3</th>
-            <td></td>
-            <td></td>
-            <td>17</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>4</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        <% for i in [0...50]: %>
+            <tr>
+                <th><%= i %></th>
+                <% for j in [65...91]: %>
+                    <td data-cell="<%= String.fromCharCode(j) + i %>"></td>
+                <% end %>
+            </tr>
+        <% end %>
     </tbody>
 </table>

@@ -8,11 +8,13 @@ module.exports = class TableView extends Chaplin.View
 
     getTemplateFunction: -> require 'chaplin/templates/table'
 
-    getTemplateData: -> console.log @model.get 'sheet'
-
     afterRender: ->
         super
 
         $(@el).attr 'id', 'table'
+
+        # Populate with our data.
+        for key, value of @model.get 'sheet'
+            $(@el).find("td[data-cell=#{key}]").html value
 
         @
