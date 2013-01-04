@@ -19,10 +19,18 @@ module.exports = class CodeView extends Chaplin.View
 
         @
 
+    # Show a message.
+    message: (text, type="alert") ->
+        $(@el).find('#message').text(text).attr 'class', type
+
+    # Clear message.
+    clear: ->
+        $(@el).find('#message').text('').attr 'class', ''
+
+    # Save the model.
     exec: ->
-        # Save.
         @model.save 'code', $(@el).find('textarea').val(),
             'success': (model, response, options) =>
-                console.log 'success'
+                @message 'Ready', 'success'
             'error': (model, xhr, options) =>
-                console.log 'error'
+                @message JSON.parse(xhr.responseText).message

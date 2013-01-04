@@ -1,2 +1,2 @@
-<span class="alert">Error: this won't compile</span>
+<span id="message"></span>
 <textarea><%= @text %></textarea>

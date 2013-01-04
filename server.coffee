@@ -50,7 +50,7 @@ exports.startServer = (port, dir) ->
             code = @req.body.code
             exec code, @req.body.sheet, (err, sheet) =>
                 if err
-                    @res.writeHead 400, 'application/json'
+                    @res.writeHead 500, 'application/json'
                     @res.write JSON.stringify 'message': err
                     @res.end()
                 else

@@ -40,14 +40,13 @@ module.exports = (code, sheet, cb) ->
     gets = ( "global.sheet.#{cell} = #{cell}" for cell in cells )
     code = code + '\n' + gets.join('\n')
 
-    # Compile CS to JS wo/ closure.
-    code = cs.compile code, 'bare': 'on'
-
     # Make ref to global.
     global.sheet = sheet
 
-    # Eval... yup.
     try
+        # Compile CS to JS.
+        code = cs.compile code, 'bare': 'on'
+        # Eval... yup.
         eval code
         cb null, sheet
     catch e
