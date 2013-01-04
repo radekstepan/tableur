@@ -48,39 +48,51 @@ exports.startServer = (port, dir) ->
     app.router.path "/api/docs/:name", ->
         @post (name) ->
             code = @req.body.code
-            exec code, @req.body.sheet, (err, sheet) =>
+            sheet = @req.body.sheet
+            exec code, sheet, (err, newSheet) =>
                 if err
                     @res.writeHead 500, 'application/json'
                     @res.write JSON.stringify 'message': err
                     @res.end()
                 else
-                    # Save it.
-
-                    # Respond with the latest version.
-                    @res.writeHead 200, 'application/json'
-                    @res.write JSON.stringify
-                        'code': code
-                        'sheet': sheet
-                    @res.end()
+                    # Save the (pre-exec) spreadsheet.
+                    sheet = csv.save sheet
+                    fs.writeFile "./docs/#{name}.csv", sheet, 'utf-8', (err) =>
+                        if err
+                            @res.writeHead 500
+                            @res.end()
+                        else
+                            # Save the code.
+                            fs.writeFile "./docs/#{name}.coffee", code, 'utf-8', (err) =>
+                                if err
+                                    @res.writeHead 500
+                                    @res.end()
+                                else
+                                    # Respond with the latest version.
+                                    @res.writeHead 200, 'application/json'
+                                    @res.write JSON.stringify
+                                        'code': code
+                                        'sheet': newSheet
+                                    @res.end()
 
         @get (name) ->
             fs.readFile "./docs/#{name}.coffee", 'utf-8', (err, docCoffee) =>
                 if err
-                    @res.writeHead 404
+                    @res.writeHead 500
                     @res.end()
                 else
                     fs.readFile "./docs/#{name}.csv", 'utf-8', (err, docCSV) =>
                         if err
-                            @res.writeHead 404
+                            @res.writeHead 500
                             @res.end()
                         else
                             # Read the sheet.
-                            sheet = csv docCSV
+                            sheet = csv.read docCSV
 
                             # Exec.
                             exec docCoffee, sheet, (err, sheet) =>
                                 if err
-                                    @res.writeHead 400, 'application/json'
+                                    @res.writeHead 500, 'application/json'
                                     @res.write JSON.stringify 'message': err
                                     @res.end()
                                 else
