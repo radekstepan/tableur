@@ -5,7 +5,6 @@ union    = require 'union'
 connect  = require 'connect'
 send     = require 'send'
 fs       = require 'fs'
-cs       = require 'coffee-script'
 
 csv      = require './lib/csv.coffee'
 exec     = require './lib/exec.coffee'
@@ -61,11 +60,8 @@ exports.startServer = (port, dir) ->
                             # Read the sheet.
                             sheet = csv docCSV
 
-                            # Compile CS to JS wo/ closure.
-                            code = cs.compile docCoffee, 'bare': 'on'
-
                             # Exec.
-                            exec code, sheet, (err, sheet) =>
+                            exec docCoffee, sheet, (err, sheet) =>
                                 if err
                                     @res.writeHead 400, 'application/json'
                                     @res.write JSON.stringify 'message': err

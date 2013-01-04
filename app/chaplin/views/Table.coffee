@@ -11,6 +11,8 @@ module.exports = class TableView extends Chaplin.View
     afterRender: ->
         super
 
+        console.log @model.get 'sheet'
+
         $(@el).attr 'id', 'table'
 
         # Populate with our data.
