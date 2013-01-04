@@ -46,6 +46,23 @@ exports.startServer = (port, dir) ->
                 @res.end()
 
     app.router.path "/api/docs/:name", ->
+        @post (name) ->
+            code = @req.body.code
+            exec code, @req.body.sheet, (err, sheet) =>
+                if err
+                    @res.writeHead 400, 'application/json'
+                    @res.write JSON.stringify 'message': err
+                    @res.end()
+                else
+                    # Save it.
+
+                    # Respond with the latest version.
+                    @res.writeHead 200, 'application/json'
+                    @res.write JSON.stringify
+                        'code': code
+                        'sheet': sheet
+                    @res.end()
+
         @get (name) ->
             fs.readFile "./docs/#{name}.coffee", 'utf-8', (err, docCoffee) =>
                 if err

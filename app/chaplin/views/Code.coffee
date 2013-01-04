@@ -15,4 +15,14 @@ module.exports = class CodeView extends Chaplin.View
 
         $(@el).attr 'id', 'code'
 
+        @delegate 'keyup', 'textarea', @exec
+
         @
+
+    exec: ->
+        # Save.
+        @model.save 'code', $(@el).find('textarea').val(),
+            'success': (model, response, options) =>
+                console.log 'success'
+            'error': (model, xhr, options) =>
+                console.log 'error'
