@@ -19,6 +19,9 @@ exports.save = (data, delimiter = ',') ->
     sheet.join "\n"
 
 exports.read = (data, delimiter = ',') ->
+    # Early bath?
+    if data.length is 0 then return {}
+
     # Create a regular expression to parse the CSV values.
     objPattern = new RegExp(
         (

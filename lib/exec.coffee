@@ -7,6 +7,9 @@ catcher = (e, cb) ->
     return cb err, null
 
 module.exports = (code, sheet, cb) ->
+    # Early bath?
+    if code.length is 0 then return cb null, sheet
+
     # Get the tokens used in the code.
     tokens = cs.tokens code
 
