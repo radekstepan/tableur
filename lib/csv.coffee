@@ -1,3 +1,8 @@
+# Escape on enforced string or empty value.
+escape = (text) ->
+    if text then '"' + new String(text).replace(/\"/g, '""') + '"'
+    else '""'
+
 exports.save = (data, delimiter = ',') ->
     # Make into a grid.
     sheet = []
@@ -10,8 +15,6 @@ exports.save = (data, delimiter = ',') ->
 
     # Stringify.
     for i, row of sheet
-        # Escape on enforced string.
-        escape = (text) -> '"' + new String(text).replace(/\"/g, '""') + '"'
         row = ( escape(column) for column in row )
         sheet[i] = row
 
@@ -55,9 +58,13 @@ exports.read = (data, delimiter = ',') ->
         
         # Unescape any double quotes if we found a quoted value.
         if quoted then value = quoted.replace(new RegExp("\"\"", "g"), "\"")
-        
+
         # Add it, no checking whether we can work it.
-        sheet[String.fromCharCode(65 + column++) + row] = value if value.length isnt 0
-    
+        if value and value.length isnt 0
+            sheet[String.fromCharCode(65 + column++) + row] = value
+        else
+            # We can have empty cells, move index then.
+            column++
+
     # Return the parsed data.
     sheet
