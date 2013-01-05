@@ -59,13 +59,15 @@ exports.startServer = (port, dir) ->
                     sheet = csv.save sheet
                     fs.writeFile "./docs/#{name}.csv", sheet, 'utf-8', (err) =>
                         if err
-                            @res.writeHead 500
+                            @res.writeHead 500, 'application/json'
+                            @res.write JSON.stringify 'message': err
                             @res.end()
                         else
                             # Save the code.
                             fs.writeFile "./docs/#{name}.coffee", code, 'utf-8', (err) =>
                                 if err
-                                    @res.writeHead 500
+                                    @res.writeHead 500, 'application/json'
+                                    @res.write JSON.stringify 'message': err
                                     @res.end()
                                 else
                                     # Respond with the latest version.
@@ -78,22 +80,27 @@ exports.startServer = (port, dir) ->
         @get (name) ->
             fs.readFile "./docs/#{name}.coffee", 'utf-8', (err, docCoffee) =>
                 if err
-                    @res.writeHead 500
+                    @res.writeHead 500, 'application/json'
+                    @res.write JSON.stringify 'message': err
                     @res.end()
                 else
                     fs.readFile "./docs/#{name}.csv", 'utf-8', (err, docCSV) =>
                         if err
-                            @res.writeHead 500
+                            @res.writeHead 500, 'application/json'
+                            @res.write JSON.stringify 'message': err
                             @res.end()
                         else
                             # Read the sheet.
-                            sheet = csv.read docCSV
+                            oldSheet = csv.read docCSV
 
                             # Exec.
-                            exec docCoffee, sheet, (err, sheet) =>
+                            exec docCoffee, oldSheet, (err, sheet) =>
                                 if err
                                     @res.writeHead 500, 'application/json'
-                                    @res.write JSON.stringify 'message': err
+                                    @res.write JSON.stringify
+                                        'message': err
+                                        'code': docCoffee
+                                        'sheet': oldSheet
                                     @res.end()
                                 else
                                     @res.writeHead 200, 'application/json'

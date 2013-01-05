@@ -27,26 +27,32 @@ module.exports = class Tableur
         # Create the app view.
         app = new AppView 'collection': docs, 'model': model
 
+        render = (data, message) ->
+            # Clear any content.
+            $(app.el).find('#main').html('')
+
+            # Set the content on our skeleton model.
+            model.set 'code':  data.code
+            model.set 'sheet': data.sheet
+
+            # In full View.
+            new TableView
+                'model': model
+                'height': app.height()
+                'codeView': codeView = new CodeView
+                    'model': model
+                    'height': app.height()
+
+            # Show message.
+            codeView.message.apply @, message
+
         # Fetch the doc.
         $.ajax
             'url': "/api/docs/#{model.get('name')}"
             'dataType': 'json'
-            
             'success': (data) ->
-                # Clear any content.
-                $(app.el).find('#main').html('')
-
-                # Set the content on our skeleton model.
-                model.set 'code':  data.code
-                model.set 'sheet': data.sheet
-
-                new TableView
-                    'model': model
-                    'height': app.height()
-                    'codeView': new CodeView
-                        'model': model
-                        'height': app.height()
-            
+                render data, [ 'Done', 'success' ]
             'statusCode':
-                400: (data) ->
-                    console.log JSON.parse(data.responseText).message
+                500: (data) ->
+                    data = JSON.parse(data.responseText)
+                    render data, [ data.message, 'error' ]
