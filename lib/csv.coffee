@@ -3,14 +3,15 @@ exports.save = (data, delimiter = ',') ->
     sheet = []
     for key, value of data
         [ column, row ] = (key.match /([A-Z])(\d+)/)[1...] # char, not string!
-        # Skip empty values.
-        if value.length isnt 0
+        # Skip undefined or empty values.
+        if value and value.length isnt 0
             sheet[row] ?= [] # init maybe?
             sheet[parseInt row][column.charCodeAt(0) - 65] = value # save the value
 
     # Stringify.
     for i, row of sheet
-        escape = (text) -> '"' + text.replace(/\"/g, '""') + '"'
+        # Escape on enforced string.
+        escape = (text) -> '"' + new String(text).replace(/\"/g, '""') + '"'
         row = ( escape(column) for column in row )
         sheet[i] = row
 

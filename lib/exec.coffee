@@ -10,10 +10,12 @@ module.exports = (code, sheet, cb) ->
     # Find all the references to the cells, recursively.
     cells = []
     (extract = (arr) ->
+        isCell = (text) -> (new RegExp(/([A-Z])(\d+)/)).test text
         for item in arr
             if item instanceof Array
-                if typeof item[0] is 'string'
-                    if item[0] is 'IDENTIFIER' and item[1] not in cells then cells.push item[1]
+                [ obj, name ] = item
+                if typeof obj is 'string'
+                    if obj is 'IDENTIFIER' and isCell(name) and name not in cells then cells.push name
                 else
                     extract item
     ) tokens
@@ -26,12 +28,10 @@ module.exports = (code, sheet, cb) ->
         # Get the value.
         value = sheet[cell]
 
-        # Working with floats, integers and strings coming from CSV.
-        isFloat = (n) -> n is +n and n isnt (n | 0)
-        isInteger = (n) -> n is +n and n is (n | 0)
-        
-        if isFloat(value) or isInteger(value) then value
-        else "'#{value}'"
+        # Numbers.
+        if not isNaN(parseFloat(value)) and isFinite(value) then value
+        # Strings.
+        else "'#{value}'"#.replace /<(?:.|\n)*?>/gm, ''
 
     defs = ( "#{cell} = #{valueOf cell}" for cell in cells )
     code = defs.join('\n') + '\n' + code
@@ -45,11 +45,12 @@ module.exports = (code, sheet, cb) ->
 
     try
         # Compile CS to JS.
-        code = cs.compile code, 'bare': 'on'
+        code = cs.compile code
         # Eval... yup.
         eval code
-        cb null, sheet
     catch e
         err = e
         if err.name and err.message then err = err.name + ': ' + err.message
-        cb err, null
+        return cb err, null
+
+    cb null, sheet
