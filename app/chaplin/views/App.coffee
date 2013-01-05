@@ -28,6 +28,6 @@ module.exports = class AppView extends Chaplin.View
     exec: ->
         @model.save {},
             'success': (model, response, options) =>
-                Chaplin.mediator.publish 'message', 'Ready', 'success'
+                Chaplin.mediator.publish 'message', 'Done', 'success'
             'error': (model, xhr, options) =>
                 Chaplin.mediator.publish 'message', JSON.parse(xhr.responseText).message, 'error'

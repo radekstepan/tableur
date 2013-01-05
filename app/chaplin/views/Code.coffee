@@ -26,12 +26,21 @@ module.exports = class CodeView extends Chaplin.View
 
         @
 
+    dispose: ->
+        # Kill timeout.
+        clearTimeout(@time)
+
+        # Continue...
+        super
+
     # Show a message.
     message: (text, type="alert") =>
-        $(@el).find('#message').text(text).attr 'class', type
+        clearTimeout(@time) # stop any previous timeout first
+        $(@el).find('#message').text(text).attr 'class', type # set message
+        @time = setTimeout @clear, 2000 # set it to clear in a while
 
     # Clear message.
-    clear: ->
+    clear: =>
         $(@el).find('#message').text('').attr 'class', ''
 
     # Save the model.
