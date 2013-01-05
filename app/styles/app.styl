@@ -1,6 +1,23 @@
-@import url(http://fonts.googleapis.com/css?family=Strait)
-@import url(http://fonts.googleapis.com/css?family=Noticia\+Text)
-@import url(http://fonts.googleapis.com/css?family=Droid\+Sans\+Mono)
+@font-face {
+    font-family: 'Droid Sans Mono'
+    font-style: normal
+    font-weight: 400
+    src: local('Droid Sans Mono'), local('DroidSansMono'), url('../fonts/DroidSansMono.woff') format('woff')
+}
+
+@font-face {
+    font-family: 'Noticia Text';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Noticia Text'), local('NoticiaText-Regular'), url('../fonts/NoticiaText.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Strait'
+    font-style: normal
+    font-weight: 400
+    src: local('Strait'), local('Strait-Regular'), url('../fonts/Strait.woff') format('woff')
+}
 
 html, body
     height: 100%
@@ -28,7 +45,6 @@ header
         padding: 14px 0
 
         span
-            font-size: 24px
             color: #000
             margin-right: 10px
 
@@ -99,36 +115,28 @@ header
         float: left
         font-family: 'Droid Sans Mono'
 
-    table
-        border-color: #CCC
-        border-collapse: collapse
-        width: 100%
-        
-        th, tr, td
+    #table
+        div.jqx-grid-row-header, div.jqx-grid-column-header
+            background: #F4F4F4
+            text-align: center
+
+        div.jqx-grid-cell, div.jqx-grid-cell *,
+        div.jqx-grid-row-header, div.jqx-grid-row-header *,
+        div.jqx-grid-column-header, div.jqx-grid-column-header *
             color: #484848
             font-size: 12px
 
-        th, td
-            padding: 4px !important
+        div.jqx-grid-column-header, div.jqx-grid-cell
+            border-color: #CCC
 
-        th
-            background: #F4F4F4
-            height: 27px
-            border-right: 1px solid #D8D8D8
-            text-align: center
-
-        tr
-            border-bottom: 1px solid #D8D8D8
-
-        td
-            background: #FFF
-            border-right: 1px solid #D8D8D8
-            vertical-align: middle
-            white-space: nowrap
-
-            &.edit
+            div
+                margin-top: 6px !important
+            input
+                font-family: 'Droid Sans Mono'
+                font-size: 12px
+                padding-left: 3px
+                border-color: #0055E1
                 background: #E7FBFF
-                border: 2px solid #0055E1
                 color: #000
 
     &:after

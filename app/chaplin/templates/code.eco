@@ -1,2 +1,2 @@
 <span id="message"></span>
-<textarea><%= @text %></textarea>
+<textarea spellcheck="false"><%= @text %></textarea>

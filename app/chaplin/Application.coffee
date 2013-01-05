@@ -15,9 +15,14 @@ module.exports = class Tableur
         path = window.location.pathname
 
         # Grab first doc if none specified.
-        if path is '/' then req = docs.at(0).name
+        if path is '/' then model = docs.at(0)
+        else
+            # Grab the name of the doc from the URL.
+            name = path.split('/').pop() # last part
+            model = docs.find( (doc) -> doc.get('name') is name )
 
-        model = docs.filter( (doc) -> doc.name is req ).pop()
+        # We better have a model by now.
+        assert model, 'Spreadsheet model needs to be defined'
 
         # Create the app view.
         app = new AppView 'collection': docs, 'model': model
