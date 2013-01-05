@@ -1,0 +1,9 @@
+.cm-s-tableur span.cm-comment { color: #a86; }
+.cm-s-tableur span.cm-keyword { line-height: 1em; font-weight: bold; color: #006699; }
+.cm-s-tableur span.cm-string { color: #CC3300; }
+.cm-s-tableur span.cm-builtin { line-height: 1em; font-weight: bold; color: #077; }
+.cm-s-tableur span.cm-special { line-height: 1em; font-weight: bold; color: #0aa; }
+.cm-s-tableur span.cm-variable { color: #484848; }
+.cm-s-tableur span.cm-number, .cm-s-tableur span.cm-atom { color: #FF6600; }
+.cm-s-tableur span.cm-meta {color: #555;}
+.cm-s-tableur span.cm-link { color: #3a3; }

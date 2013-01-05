@@ -16,7 +16,9 @@ exports.config =
                     'vendor/js/jqx/jqxgrid.js',
                     'vendor/js/jqx/jqxgrid.edit.js',
                     'vendor/js/jqx/jqxgrid.selection.js',
-                    'vendor/js/jqx/jqxgrid.columnsresize.js'
+                    'vendor/js/jqx/jqxgrid.columnsresize.js',
+                    'vendor/js/codemirror/codemirror.js',
+                    'vendor/js/codemirror/coffeescript.js'
                 ]
 
         stylesheets:
@@ -26,10 +28,12 @@ exports.config =
             order:
                 before: [
                     'vendor/css/foundation3.css', # Foundation 3
-                    'vendor/css/jqx.css' # jqx
+                    'vendor/css/jqx.css', # jqx
+                    'vendor/css/codemirror.css' # CodeMirror
                 ]
                 after: [
-                    'app/styles/app.styl' # app style
+                    'app/styles/app.styl', # app style
+                    'app/styles/codemirror.css' # CodeMirror style
                 ]
 
         templates:

@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'Droid Sans Mono'
+    font-family: 'Inconsolata'
     font-style: normal
     font-weight: 400
-    src: local('Droid Sans Mono'), local('DroidSansMono'), url('../fonts/DroidSansMono.woff') format('woff')
+    src: local('Inconsolata'), url('../fonts/Inconsolata.woff') format('woff')
 }
 
 @font-face {
@@ -21,7 +21,6 @@
 
 html, body
     height: 100%
-    font-family: 'Noticia Text'
 
 body
     background: #F4F4F4
@@ -47,6 +46,8 @@ header
         span
             color: #000
             margin-right: 10px
+            font-family: 'Noticia Text'
+            font-size: 24px
 
     a#execute
         background: url('../img/calc.png') no-repeat 0 0
@@ -81,6 +82,7 @@ header
 #main
     padding: 20px
     background: #F4F4F4
+    font-family: monospace
 
     #code
         margin-right: 4%
@@ -93,12 +95,22 @@ header
             border-radius: 0
             font-size: 12px
 
-        span
+        div.CodeMirror
+            border: 1px solid #b3b3b3
+            background: #FFF
+
+            // *
+            //     font-size: 12px
+            div.CodeMirror-focused div.CodeMirror-selected
+                background: #e7fbff
+
+        span#message
             position: absolute
             bottom: 0
             left: 0
             color: #FFF
             width: 100%
+            z-index: 2
 
             &.error
                 padding: 4px
@@ -106,14 +118,15 @@ header
 
             &.success
                 padding: 4px
-                background: #227E0D
+                background: #006699
 
     #code, #table
         width: 48%
         float: left
-        font-family: 'Droid Sans Mono'
 
     #table
+        font-family: monospace
+
         div.jqx-grid-row-header, div.jqx-grid-column-header
             background: #F4F4F4
             text-align: center
@@ -130,10 +143,10 @@ header
             div
                 margin-top: 6px !important
             input
-                font-family: 'Droid Sans Mono'
+                font-family: monospace
                 font-size: 12px
                 padding-left: 3px
-                border-color: #0055E1
+                border-color: #006699
                 background: #E7FBFF
                 color: #000
 

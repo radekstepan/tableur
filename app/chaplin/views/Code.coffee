@@ -15,14 +15,18 @@ module.exports = class CodeView extends Chaplin.View
 
         $(@el).attr 'id', 'code'
 
-        # Save.
-        @delegate 'keyup', 'textarea', @save
-
         # Listen to messages, we show them.
         Chaplin.mediator.subscribe 'message', @message
 
+        # Init CodeMirror.
+        editor = CodeMirror.fromTextArea $(@el).find('textarea')[0],
+            'theme': 'tableur'
+
+        # Save to Model on change.
+        editor.on 'change', (ed, chn) => @model.set 'code', ed.getValue()
+
         # Adjust textarea height.
-        $(@el).css 'height', @options.height
+        $(@el).find('.CodeMirror').css 'height', @options.height
 
         @
 
@@ -36,13 +40,15 @@ module.exports = class CodeView extends Chaplin.View
     # Show a message.
     message: (text, type="alert") =>
         clearTimeout(@time) # stop any previous timeout first
-        $(@el).find('#message').text(text).attr 'class', type # set message
-        @time = setTimeout @clear, 2000 # set it to clear in a while
+        $(@el).find('#message').text(text).attr('class', type).css('opacity', 1) # set message
+        @time = setTimeout @clear, 4000 # set it to clear in a while
 
     # Clear message.
     clear: =>
-        $(@el).find('#message').text('').attr 'class', ''
-
-    # Save the model.
-    save: ->
-        @model.set 'code', $(@el).find('textarea').val()
+        (msg = $(@el).find('#message')).animate
+            'opacity': 0
+        ,
+            'queue': false
+            'duration': 450
+            'complete': ->
+                msg.text('').attr('class', '')
