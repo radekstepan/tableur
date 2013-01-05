@@ -79,7 +79,7 @@ module.exports = class TableView extends Chaplin.View
         # initialize jqxGrid
         $('#table div').jqxGrid
             'width': $('#table').outerWidth()
-            'height': 280
+            'height': @options.height
             'source': new $.jqx.dataAdapter source
             'editable': true
             'columnsresize': true

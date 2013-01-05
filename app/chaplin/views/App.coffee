@@ -17,6 +17,13 @@ module.exports = class AppView extends Chaplin.View
 
         @
 
+    # Determine the height of the viewport we can fill with content.
+    height: ->
+        x = $(window).height() -
+        $('header').outerHeight() -
+        parseInt($('#main').css('padding-top')) -
+        parseInt($('#main').css('padding-bottom'))
+
     # Execute the code over the sheet messaging to the air.
     exec: ->
         @model.save {},

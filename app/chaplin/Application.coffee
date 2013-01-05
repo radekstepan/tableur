@@ -42,7 +42,10 @@ module.exports = class Tableur
 
                 new TableView
                     'model': model
-                    'codeView': new CodeView('model': model)
+                    'height': app.height()
+                    'codeView': new CodeView
+                        'model': model
+                        'height': app.height()
             
             'statusCode':
                 400: (data) ->

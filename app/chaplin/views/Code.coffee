@@ -21,6 +21,9 @@ module.exports = class CodeView extends Chaplin.View
         # Listen to messages, we show them.
         Chaplin.mediator.subscribe 'message', @message
 
+        # Adjust textarea height.
+        $(@el).css 'height', @options.height
+
         @
 
     # Show a message.
