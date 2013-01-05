@@ -64,6 +64,9 @@ module.exports = class TableView extends Chaplin.View
             'datafields': datafields
             # On row update, update the underlying Model.
             'updaterow': (row, data) =>
+                # Get the previous state.
+                sheet = @model.get('sheet')
+
                 for column, value of data
                     # Is cell non-empty?
                     if value.length isnt 0
@@ -72,9 +75,16 @@ module.exports = class TableView extends Chaplin.View
                             # Update the localData for next time (if we do not re-render or something).
                             @localData[row][column] = value
                             # Update the Spreadsheet.
-                            sheet = @model.get('sheet')
                             sheet[column + row] = value
-                            @model.set 'sheet', sheet
+                    else
+                        # Maybe we were clearing a previously set cell.
+                        if @localData[row][column]
+                            # Update the localData for next time (if we do not re-render or something).
+                            delete @localData[row][column]
+                            delete sheet[column + row]
+
+                # One set.
+                @model.set 'sheet', sheet 
 
         # initialize jqxGrid
         $('#table div').jqxGrid
