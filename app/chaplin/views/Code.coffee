@@ -15,12 +15,16 @@ module.exports = class CodeView extends Chaplin.View
 
         $(@el).attr 'id', 'code'
 
-        @delegate 'keyup', 'textarea', @exec
+        # Save.
+        @delegate 'keyup', 'textarea', @save
+
+        # Listen to messages, we show them.
+        Chaplin.mediator.subscribe 'message', @message
 
         @
 
     # Show a message.
-    message: (text, type="alert") ->
+    message: (text, type="alert") =>
         $(@el).find('#message').text(text).attr 'class', type
 
     # Clear message.
@@ -28,9 +32,5 @@ module.exports = class CodeView extends Chaplin.View
         $(@el).find('#message').text('').attr 'class', ''
 
     # Save the model.
-    exec: ->
-        @model.save 'code', $(@el).find('textarea').val(),
-            'success': (model, response, options) =>
-                @message 'Ready', 'success'
-            'error': (model, xhr, options) =>
-                @message JSON.parse(xhr.responseText).message
+    save: ->
+        @model.set 'code', $(@el).find('textarea').val()

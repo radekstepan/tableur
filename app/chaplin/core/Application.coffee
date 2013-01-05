@@ -28,6 +28,7 @@ module.exports = class Tableur
         $.ajax
             'url': "/api/docs/#{model.get('name')}"
             'dataType': 'json'
+            
             'success': (data) ->
                 # Clear any content.
                 $(app.el).find('#main').html('')
@@ -36,8 +37,10 @@ module.exports = class Tableur
                 model.set 'code':  data.code
                 model.set 'sheet': data.sheet
 
-                new CodeView 'model': model
-                new TableView 'model': model
+                new TableView
+                    'model': model
+                    'codeView': new CodeView('model': model)
+            
             'statusCode':
                 400: (data) ->
                     console.log JSON.parse(data.responseText).message

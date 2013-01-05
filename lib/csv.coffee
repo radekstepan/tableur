@@ -3,8 +3,10 @@ exports.save = (data, delimiter = ',') ->
     sheet = []
     for key, value of data
         [ column, row ] = (key.match /([A-Z])(\d+)/)[1...] # char, not string!
-        sheet[row] ?= [] # init maybe?
-        sheet[parseInt row][column.charCodeAt(0) - 65] = value # save the value
+        # Skip empty values.
+        if value.length isnt 0
+            sheet[row] ?= [] # init maybe?
+            sheet[parseInt row][column.charCodeAt(0) - 65] = value # save the value
 
     # Stringify.
     for i, row of sheet

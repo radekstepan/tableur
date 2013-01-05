@@ -1,5 +1,5 @@
 <header>
-    <h1><span>tableur</span><%= @active.nice %></h1>
+    <h1><span>tableur</span><%= @active.nice %></h1> <a id="execute" title="Execute"></a>
     <nav>
         <ul>
             <% for doc in @docs: %>

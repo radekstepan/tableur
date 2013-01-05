@@ -23,12 +23,23 @@ header
         font-weight: 400
         color: #484848
         text-shadow: 1px 1px 0 rgba(255,255,255,0.5)
+        display: inline-block
+        vertical-align: middle
         padding: 14px 0
 
         span
             font-size: 24px
             color: #000
             margin-right: 10px
+
+    a#execute
+        background: url('../img/calc.png') no-repeat 0 0
+        width: 38px
+        height: 40px
+        display: inline-block
+        cursor: pointer
+        vertical-align: bottom
+        margin-bottom: 7px
 
     nav
         ul
@@ -75,7 +86,7 @@ header
             color: #FFF
             width: 100%
 
-            &.alert
+            &.error
                 padding: 4px
                 background: #850071
 
