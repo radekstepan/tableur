@@ -1,4 +1,4 @@
-Tableur = require 'chaplin/core/Application'
+Tableur = require 'chaplin/Application'
 Spreadsheets = require 'chaplin/models/Spreadsheets'
 
 $ ->

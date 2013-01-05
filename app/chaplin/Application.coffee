@@ -4,8 +4,6 @@ AppView = require 'chaplin/views/App'
 CodeView = require 'chaplin/views/Code'
 TableView = require 'chaplin/views/Table'
 
-require 'chaplin/lib/assert'
-
 # The application object.
 module.exports = class Tableur
 
