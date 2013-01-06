@@ -1,7 +1,7 @@
 # Currency multipliers.
 currencies = {}
-for key in [1...6] when H[key] and I[key]
-  currencies[H[key]] = I[key]
+for key in [12...17] when A[key] and B[key]
+  currencies[A[key]] = B[key]
 
 # Convert amount into USD.
 toDollars = (text) ->
@@ -19,7 +19,7 @@ calc = (col) ->
   # Get child edu cost in USD.
   edu = toDollars(col[4])
   # Get personal and child expenses in USD.
-  exp = toDollars(I[7]) + toDollars(I[8])
+  exp = toDollars(E[15]) + toDollars(E[16])
   # Adjust expenses by living costs.
   exp = exp * col[1]
   # Extra costs incurred?
@@ -33,4 +33,4 @@ calc = (col) ->
   col[7] = col[7] + ' USD'
 
 # Run the calc on these columns.
-( calc(col) for col in [ B, C, D, E, F ] )
+( calc(col) for col in [ B, C, D, E, F, G ] )

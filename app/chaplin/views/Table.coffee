@@ -8,32 +8,49 @@ module.exports = class TableView extends Chaplin.View
 
     getTemplateFunction: -> require 'chaplin/templates/table'
 
+    initialize: ->
+        # Re-render when new calculation comes in.
+        Chaplin.mediator.subscribe 'message', (text, type) =>
+            if type is 'success' then @jqxUpdate()
+
     afterRender: ->
         super
 
         $(@el).attr 'id', 'table'
 
-        # Init jqxGrid.
-        @jqx()
-
-        # Re-render when new calculation comes in.
-        Chaplin.mediator.subscribe 'message', (text, type) =>
-            if type is 'success' then @render()
+        # Render jqxGrid.
+        @jqxRender()
 
         @
 
-    # Render the jqxGrid.
-    jqx: ->
-        # Convert Model into a jqx localData object.
-        @localData = localData = []
+    # Convert Model to jqx localData.
+    modelToJqx: ->
+        localData = []
         for key, value of @model.get('sheet')
             [ column, row ] = (key.match /([A-Z])(\d+)/)[1...]
             localData[row] ?= {}
             localData[row][column] = value
+        localData
 
-        datafields = [] ; columns = []
+    # Update the jqxGrid.
+    jqxUpdate: ->
+        # Convert Model into a jqx localData object.
+        @localData = @modelToJqx()
+
+        # Better have this.
+        assert @source, 'Do not have source for jqxGrid'
+
+        @source.localdata = @localData
+        # Bind to the new source.
+        $('#table #jqx').jqxGrid 'source': @source
+
+    # Render the jqxGrid.
+    jqxRender: ->
+        # Convert Model into a jqx localData object.
+        @localData = @modelToJqx()
 
         # Render the columns.
+        datafields = [] ; columns = []
         for i in [0...26] # A-Z
             text = String.fromCharCode(65 + i) # column by letter
             
@@ -49,15 +66,15 @@ module.exports = class TableView extends Chaplin.View
             
             datafields.push 'name': text
             
-            # Normal cell column.
+            # Column.
             columns.push
                 'text': text
                 'datafield': text
                 'width': 90
                 'renderer': (value) -> "<div>#{value}</div>"
-        
-        source =
-            'localdata': localData
+
+        @source =
+            'localdata': @localData
             'datatype': 'array'
             'unboundmode': true
             'totalrecords': 100 # 0-99
@@ -84,13 +101,22 @@ module.exports = class TableView extends Chaplin.View
                             delete sheet[column + row]
 
                 # One set.
-                @model.set 'sheet', sheet 
+                @model.set 'sheet', sheet
 
-        # initialize jqxGrid
-        $('#table div').jqxGrid
+        # Make into dataAdapter.
+        dataAdapter = new $.jqx.dataAdapter @source,
+            downloadComplete: (data, status, xhr) ->
+                # console.log 'downloadComplete', data, status, xhr
+            loadComplete: (data) ->
+                # console.log 'loadComplete', data
+            loadError: (xhr, status, error) ->
+                # console.log 'loadError', xhr, status, error
+
+        # Initialize jqxGrid.
+        $('#table #jqx').jqxGrid
             'width': $('#table').outerWidth()
             'height': @options.height
-            'source': new $.jqx.dataAdapter source
+            'source': dataAdapter
             'editable': true
             'columnsresize': true
             'selectionmode': "singlecell"
