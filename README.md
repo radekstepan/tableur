@@ -2,6 +2,8 @@
 
 Programmable CSV spreadsheets in CoffeeScript.
 
+![image](https://raw.github.com/radekstepan/tableur/master/example.png)
+
 ## Getting started
 
 ```bash

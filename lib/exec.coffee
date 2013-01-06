@@ -23,7 +23,7 @@ module.exports = (code, sheet, cb) ->
                 [ obj, name ] = item
                 if typeof obj is 'string'
                     if obj is 'IDENTIFIER'
-                        if name in badies then throw "Error: Illegal IDENTIFIER `#{name}` found"
+                        if name in badies then throw "Error: #{name} is not allowed"
                         if isCell(name) and name not in columns then columns.push name
                 else
                     extract item
