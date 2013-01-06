@@ -18,10 +18,55 @@ module.exports = class TableView extends Chaplin.View
 
         $(@el).attr 'id', 'table'
 
+        # Setup toolbar.
+        @setToolbar()
+
         # Render jqxGrid.
         @jqxRender()
 
         @
+
+    # Setup toolbar actions.
+    setToolbar: ->
+        # Get all the toolbar actions.
+        $(@el).find('#toolbar a.action').each (i, el) =>
+            # Which action is it?
+            action = $(el).attr('data-action')
+            # Set event.
+            $(el).click (e) =>
+                # Do we have a cell selected?
+                if @selectedCell
+                    # Get current spreadsheet.
+                    sheet = @model.get 'sheet'
+                    # Store new sheet here.
+                    neuf = {}
+                    # Everything with letter `row` and above need to shift by one.
+                    for cell, value of sheet
+                        # Get cell's column, row.
+                        [ column, row ] = (cell.match /([A-Z])(\d+)/)[1...]
+                        # Enforce int on row.
+                        row = parseInt row
+                        
+                        # Shift based on action.
+                        switch action
+                            when 'row-above'
+                                if row >= @selectedCell.row then cell = column + (row + 1)
+                            when 'row-below'
+                                if row > @selectedCell.row then cell = column + (row + 1)
+                            when 'column-left'
+                                column = column.charCodeAt(0) - 65
+                                if column >= @selectedCell.column then cell = String.fromCharCode(column + 66) + row
+                            when 'column-right'
+                                column = column.charCodeAt(0) - 65
+                                if column > @selectedCell.column then cell = String.fromCharCode(column + 66) + row
+
+                        # Save into new.
+                        neuf[cell] = value
+
+                    # Set the new model.
+                    @model.set 'sheet', neuf
+                    # Update the grid.
+                    @jqxUpdate()
 
     # Convert Model to jqx localData.
     modelToJqx: ->
@@ -95,15 +140,18 @@ module.exports = class TableView extends Chaplin.View
                 # console.log 'loadError', xhr, status, error
 
         # Initialize jqxGrid.
-        $('#table #jqx').jqxGrid
-            'width': $('#table').outerWidth()
-            'height': @options.height
+        grid = $('#table #jqx').jqxGrid
+            'width': $('#table').width()
+            'height': @options.height - 29
             'source': dataAdapter
             'editable': true
             'columnsresize': true
             'selectionmode': "singlecell"
             'theme': ''
             'columns': columns
+
+        # Capture these events.
+        grid.on 'cellselect', @selectCell
 
     # Update jqx row in Model.
     updateRow: (row, data) =>
@@ -128,3 +176,9 @@ module.exports = class TableView extends Chaplin.View
 
         # One set event.
         @model.set 'sheet', sheet
+
+    # Event on selecting a cell.
+    selectCell: (event) =>
+        @selectedCell =
+            'column': event.args.datafield.charCodeAt(0) - 65 # column in index form too
+            'row': event.args.rowindex

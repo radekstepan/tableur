@@ -1,1 +1,17 @@
+<nav id="toolbar" class="top-bar">
+    <ul>
+        <li class="has-dropdown">
+        <a href="#">Insert</a>
+            <ul class="dropdown">
+                <li><label>Row</label></li>
+                <li><a class="action" data-action="row-above">Above</a></li>
+                <li><a class="action" data-action="row-below">Below</a></li>
+                <li class="divider"></li>
+                <li><label>Column</label></li>
+                <li><a class="action" data-action="column-left">Left</a></li>
+                <li><a class="action" data-action="column-right">Right</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 <div id="jqx"></div>
