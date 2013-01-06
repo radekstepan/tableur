@@ -1,12 +1,12 @@
-"","Seattle","Cambridge","Montreal","Brisbane","Prague","Washington D.C."
-"Living cost","0.83","1","0.83","1.18","0.66","1"
-"Salary (year)","67905 USD","34268 GBP","58865 CAD","59871 AUD","19098 USD","67905 USD"
-"Tax rate","19.5%","24.6%","36.2%","19.7%","22%","24.6%"
-"Edu (month)","1080 USD","1442 USD","973 USD","1028 USD","75 USD","1219 USD"
-"Extra costs","206.48 USD","","","","","177.7 USD"
+"","Seattle","Cambridge","Montreal","Brisbane","Prague","Washington D.C.","Basel"
+"Living cost","0.83","1","0.83","1.18","0.66","1","1.19"
+"Salary (year)","67905 USD","34268 GBP","58865 CAD","59871 AUD","19098 USD","67905 USD","66000 CHF"
+"Tax rate","19.5%","24.6%","36.2%","19.7%","22%","24.6%","13%"
+"Edu (month)","1080 USD","1442 USD","973 USD","1028 USD","75 USD","1219 USD","1844 USD"
+"Extra costs","206.48 USD","","","","","177.7 USD","245.50 CHF"
 
-"RESULT","1075 USD","-575 USD","-6 USD","60 USD","-578 USD","227 USD"
-"","","Not enough!","Not enough!","","Not enough!"
+"RESULT","2860 USD","1716 USD","1672 USD","2090 USD","57 USD","2295 USD","2814 USD"
+
 
 
 
@@ -15,3 +15,5 @@
 "AUD","1.05"
 "EUR","1.32","","Child expense (month)","521 GBP"
 "USD","1","","Personal expense (month)","1100 GBP"
+"CHF","1.09"
+"CZK","0.05"

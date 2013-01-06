@@ -25,7 +25,10 @@ module.exports = class TableView extends Chaplin.View
 
     # Convert Model to jqx localData.
     modelToJqx: ->
-        localData = []
+        # For jqx to work, we need to at least init all rows, cannot be unset.
+        localData = ( {} for i in [0...50] )
+
+        # Actually insert Model data.
         for key, value of @model.get('sheet')
             [ column, row ] = (key.match /([A-Z])(\d+)/)[1...]
             localData[row] ?= {}
@@ -80,28 +83,7 @@ module.exports = class TableView extends Chaplin.View
             'totalrecords': 100 # 0-99
             'datafields': datafields
             # On row update, update the underlying Model.
-            'updaterow': (row, data) =>
-                # Get the previous state.
-                sheet = @model.get('sheet')
-
-                for column, value of data
-                    # Is cell non-empty?
-                    if value.length isnt 0
-                        # Has it changed from last time?
-                        if not @localData[row][column] or @localData[row][column] isnt value
-                            # Update the localData for next time (if we do not re-render or something).
-                            @localData[row][column] = value
-                            # Update the Spreadsheet.
-                            sheet[column + row] = value
-                    else
-                        # Maybe we were clearing a previously set cell.
-                        if @localData[row][column]
-                            # Update the localData for next time (if we do not re-render or something).
-                            delete @localData[row][column]
-                            delete sheet[column + row]
-
-                # One set.
-                @model.set 'sheet', sheet
+            'updaterow': @updateRow
 
         # Make into dataAdapter.
         dataAdapter = new $.jqx.dataAdapter @source,
@@ -122,3 +104,27 @@ module.exports = class TableView extends Chaplin.View
             'selectionmode': "singlecell"
             'theme': ''
             'columns': columns
+
+    # Update jqx row in Model.
+    updateRow: (row, data) =>
+        # Get the previous state.
+        sheet = @model.get('sheet')
+
+        for column, value of data
+            # Is cell non-empty?
+            if value.length isnt 0
+                # Has it changed from last time?
+                if not @localData[row][column] or @localData[row][column] isnt value
+                    # Update the localData for next time (if we do not re-render or something).
+                    @localData[row][column] = value
+                    # Update the Spreadsheet.
+                    sheet[column + row] = value
+            else
+                # Maybe we were clearing a previously set cell.
+                if @localData[row][column]
+                    # Update the localData for next time (if we do not re-render or something).
+                    delete @localData[row][column]
+                    delete sheet[column + row]
+
+        # One set event.
+        @model.set 'sheet', sheet
